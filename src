@@ -5,17 +5,22 @@ player_2_score = 0
 turn_score = 0
 current_player = "Player 1"
 
-def turn():
+def turn(turn_score2):
     global turn_score
     global current_player
     global player_1_score
     global player_2_score
-    turn_score = 0
     turn_choice = input(current_player + ": " + "Roll or Bank: ")
-    if turn_choice == "R" or "r" or "Roll" or "roll":
+    if turn_choice == "R":
+        roll_die()
+    elif turn_choice == "r":
+        roll_die()
+    elif turn_choice == "Roll":
+        roll_die()
+    elif turn_choice == "roll":
         roll_die()
     elif turn_choice == "b" or "B" or "bank" or "Bank":
-        end_turn()
+        end_turn(turn_score)
         
     
 
@@ -30,24 +35,27 @@ def roll_die():
 
     if roll_number == 1:
         turn_score = 0
-        end_turn()
+        end_turn(turn_score)
         
     else:
         turn_score += roll_number
+        print("Turn Score: " + str(turn_score))
+        return turn_score
 
-def end_turn():
+def end_turn(turn_score2):
     global turn_score
     global current_player
     global player_1_score
     global player_2_score
     if current_player == "Player 1":
-        player_1_score += turn_score
+        player_1_score += turn_score2
         current_player = "Player 2"
     elif current_player == "Player 2":
-        player_2_score += turn_score
+        player_2_score += turn_score2
         current_player = "Player 1"
     print("Player 1 Score: " + str(player_1_score))
     print("Player 2 Score: " + str(player_2_score))
+    turn_score = 0
     
 
 
@@ -57,15 +65,20 @@ def play():
     global player_1_score
     global player_2_score
     while player_1_score < 100 and player_2_score < 100:
-        turn()
+        turn(turn_score)
 
 while player_1_score < 100 and player_2_score < 100:
     play()
-if player_1_score > player_2_score:
-    print("Congradulations, Player 1")
-else:
-    print("Congradulations, Player 2")
-play_again = input("Would you like to play again? y/n: ").lower().strip()
-if play_again == "y":
-    player_1_score = 0
-    player_2_score = 0
+while True:    
+    if player_1_score > player_2_score:
+        print("Congradulations, Player 1")
+    else:
+        print("Congradulations, Player 2")
+    play_again = input("Would you like to play again? y/n: ").lower().strip()
+    if play_again == "y":
+        player_1_score = 0
+        player_2_score = 0
+        current_player = "Player 1"
+        play()
+    else:
+        break
